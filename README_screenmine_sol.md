@@ -1,3 +1,28 @@
+## ⚙️ How it works: “Messages” on Solana
+
+Unlike centralized messengers, screenmine_io doesn’t send messages through servers.  
+It uses Solana as a **signal layer** — cheap, fast, censorship-resistant.
+
+### 1️⃣ Encryption
+Your message is encrypted locally using **X25519 + ChaCha20-Poly1305**,  
+then stored off-chain in **IPFS/Filecoin/DHT**. The only thing stored there is ciphertext.
+
+### 2️⃣ Crypto Signal
+A short Solana transaction (Memo or smart-contract log) contains:
+- `recipient_tag` — encrypted hash of receiver’s key  
+- `nonce` — random unique number  
+- `MAC(CID)` — integrity hash of the off-chain link  
+
+No text or readable data ever appears on-chain.
+
+### 3️⃣ Recipient Discovery
+The receiver’s client scans Solana blocks, matches `recipient_tag` locally,  
+fetches the ciphertext from IPFS and decrypts it with the shared key.
+
+✅ Fast (<1s), cheap (<$0.001), and completely private.
+
+> In screenmine_io, Solana isn’t the message storage — it’s the whisper between peers.
+
 # screenmine_io — Solana-based Anonymous Messenger (MVP)
 
 **screenmine_io** is a crypto-native messenger where anonymity is the foundation, not a feature.
